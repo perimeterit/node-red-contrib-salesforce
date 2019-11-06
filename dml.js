@@ -61,12 +61,12 @@ const handleInput = (node, msg) => {
 };
 
 module.exports = function(RED) {
-  function Dml(config) {
+  function Dml(config) {    
     const node = this;
+    RED.nodes.createNode(node, config);    
     node.connection = RED.nodes.getNode(config.connection);
     node.config = config;
     node.on('input', (msg) => handleInput(node, msg));
-    RED.nodes.createNode(node, config);
   }
   RED.nodes.registerType('dml', Dml);
 };

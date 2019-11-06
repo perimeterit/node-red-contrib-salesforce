@@ -138,10 +138,10 @@ const handleInput = (node, msg) => {
 module.exports = function(RED) {
   function Streaming(config) {
     const node = this;
+    RED.nodes.createNode(node, config);    
     node.connection = RED.nodes.getNode(config.connection);
     setupSubscriptionNode(node, config);
     node.on('input', (msg) => handleInput(node, msg));
-    RED.nodes.createNode(node, config);
     actionHelper.idle(node);
   }
   RED.nodes.registerType('streaming', Streaming);

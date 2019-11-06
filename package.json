@@ -41,7 +41,7 @@
   "license": "MIT",
   "dependencies": {
     "faye": "^1.2.4",
-    "nforce8": "^2.0.10",
+    "nforce8": "https://github.com/tempflip/nforce8#patch-1",
     "xml2js": "^0.4.19"
   },
   "scripts": {
