@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0
+
+- Node & NodeRed versions updated
+- nforce8 v 2.1.0
+- dependency updates
+
 ## 0.7.0
 
 - All event types are now supported
