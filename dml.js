@@ -31,7 +31,7 @@ const handleInput = (node, msg) => {
           break;
         case 'upsert':
           if (msg.hasOwnProperty('externalId')) {
-            sobj.sobject.setExternalId(msg.externalId.field, msg.externalId.value);
+            sobj.setExternalId(msg.externalId.field, msg.externalId.value);
           }
           dmlResult = org.upsert(payload);
           break;
@@ -46,11 +46,19 @@ const handleInput = (node, msg) => {
 
       dmlResult
         .then((sfdcResult) => {
+          // Find the best id
+          let id = msg.payload.id;
+          if (sfdcResult.id) {
+            id = sfdcResult.id;
+          } else if (msg.externalId) {
+            id = msg.externalId;
+          }
+
           let result = {
             success: true,
             object: theObject.toLowerCase(),
             action: theAction,
-            id: sfdcResult.id ? sfdcResult.id : msg.externalId ? msg.externalId : msg.payload.id
+            id: id
           };
           resolve(result);
         })
@@ -60,10 +68,10 @@ const handleInput = (node, msg) => {
   actionHelper.inputToSFAction(node, msg, realAction);
 };
 
-module.exports = function(RED) {
-  function Dml(config) {    
+module.exports = function (RED) {
+  function Dml(config) {
     const node = this;
-    RED.nodes.createNode(node, config);    
+    RED.nodes.createNode(node, config);
     node.connection = RED.nodes.getNode(config.connection);
     node.config = config;
     node.on('input', (msg) => handleInput(node, msg));

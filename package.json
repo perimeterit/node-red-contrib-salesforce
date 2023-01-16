@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-salesforce",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "description": "A set of Node-RED nodes to interact with Salesforce and Force.com.",
   "author": {
     "name": "Jeff Douglas",
@@ -15,6 +15,11 @@
     {
       "name": "Srikanth Ramakrishnan",
       "email": "srikanth.r@salesforce.com"
+    },
+    {
+      "name": "Todd Hiles",
+      "url": "https://github.com/moonrockfamily/nforce8",
+      "email": "2ToddHiles@gmail.com"
     }
   ],
   "repository": {
@@ -28,6 +33,7 @@
     "Heroku"
   ],
   "node-red": {
+    "version": ">=3.0.0",
     "nodes": {
       "soql": "soql.js",
       "sosl": "sosl.js",
@@ -38,27 +44,45 @@
       "connection-config": "connection-config.js"
     }
   },
+  "engines": {
+    "node": ">18.0"
+  },
   "license": "MIT",
   "dependencies": {
-    "faye": "^1.2.5",
-    "nforce8": "2.0.12",
+    "faye": "^1.4.0",
+    "nforce8": "2.1.0",
     "xml2js": "^0.4.23"
   },
   "scripts": {
-    "test": "mocha \"test/**/*_spec.js\""
+    "oldtest": "mocha \"test/**/*_spec.js\"",
+    "preversion": "npm test",
+    "test": "nyc --reporter=text --reporter=html --reporter=text-lcov --reporter=lcovonly ./node_modules/.bin/mocha ./test --reporter spec",
+    "postversion": "git push && git push --tags",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "snyk-protect": "node_modules/.bin/snyk-protect",
+    "prepare": "npm run snyk-protect"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-plugin-mocha": "^7.0.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^6.2.2",
-    "node-red": "^1.0.3",
-    "node-red-node-test-helper": "^0.2.3",
+    "@snyk/protect": "^1.1087.0",
+    "eslint": "^8.31.0",
+    "eslint-plugin-mocha": "^10.1.0",
+    "mocha": "^10.2.0",
+    "node-red": "^3.0.2",
+    "node-red-node-test-helper": "^0.3.0",
+    "nyc": "^15.1.0",
     "should": "^13.2.3",
-    "sinon": "^8.0.1",
-    "supertest": "^4.0.2"
-  }
+    "sinon": "^15.0.1",
+    "snyk": "^1.1087.0",
+    "supertest": "^6.3.3"
+  },
+  "nyc": {
+    "exclude": [
+      "examples",
+      "docs"
+    ]
+  },
+  "snyk": true
 }
