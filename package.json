@@ -41,6 +41,7 @@
       "chatter": "chatter.js",
       "streaming": "streaming.js",
       "obm": "obm.js",
+      "apexrest": "apexrest.js",
       "connection-config": "connection-config.js"
     }
   },

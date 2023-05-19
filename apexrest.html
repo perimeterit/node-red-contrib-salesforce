@@ -1,0 +1,75 @@
+<script type="text/javascript">
+    RED.nodes.registerType('apexrest', {
+        category: 'Salesforce',
+        color: '#C0DEED',
+        defaults: {
+            name: {
+                value: ""
+            },
+            method: {
+                value: "GET"
+            },
+            uri: {
+                value: ""
+            },
+            connection: {
+                value: "",
+                type: "connection-config",
+                required: true
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "salesforce.png",
+        label: function() {
+            return this.name || "APEX REST";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="apexrest">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-connection"><i class="fa fa-plug"></i> Connection</label>
+        <input type="text" id="node-input-connection">
+    </div>
+    <div class="form-row">
+        <label for="node-input-method"><i class="fa fa-database"></i> Method</label>
+        <select id="node-input-method">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="PATCH">PATCH</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-uri"><i class="fa fa-database"></i> uri</label>
+        <textarea id="node-input-uri" style="width:300px"></textarea>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="apexrest">
+    <p>Executes a SalesForce APEX Method uri </p>
+    <pre>
+/FindContactByEmail/restRequest/?Email=email@pitp.ca
+</pre>
+    <p>The resulting message has the following properties:
+        <ul>
+            <li>msg.payload.SalesForceID - the SalesForceID of record queried by email.</li>
+            <li>msg.payload.recordType - the type of record queried by email.</li>
+            <li>msg.payload.Message</li>
+             <li>msg.payload.code  200 record found,
+                                  404 record not found,
+                                  400 bad email format,
+                                  300 more than one record found by email,
+                                  500 exception</li>
+        </ul>
+    </p>
+    <p>The uri can be configured in the node, however if left blank, the uri should be set in an incoming message on <code>msg.uri</code>.</p>
+    <p>See the <a href="https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl" target="_blank">Salesforce SOQL documentation</a> for more information.</p>
+</script>
+
