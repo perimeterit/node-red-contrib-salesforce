@@ -55,21 +55,9 @@
 <script type="text/x-red" data-help-name="apexrest">
     <p>Executes a SalesForce APEX Method uri </p>
     <pre>
-/FindContactByEmail/restRequest/?Email=email@pitp.ca
-</pre>
-    <p>The resulting message has the following properties:
-        <ul>
-            <li>msg.payload.SalesForceID - the SalesForceID of record queried by email.</li>
-            <li>msg.payload.recordType - the type of record queried by email.</li>
-            <li>msg.payload.Message</li>
-             <li>msg.payload.code  200 record found,
-                                  404 record not found,
-                                  400 bad email format,
-                                  300 more than one record found by email,
-                                  500 exception</li>
-        </ul>
-    </p>
+        /FindContactByEmail/restRequest/?Email=email@gmail.com
+    </pre>
+    <p>The method can be configured in the node, however if another method is desired, it should be set in an incoming message on <code>msg.method</code>.</p>
     <p>The uri can be configured in the node, however if left blank, the uri should be set in an incoming message on <code>msg.uri</code>.</p>
-    <p>See the <a href="https://developer.salesforce.com/docs/atlas.en-us.soql_sosl.meta/soql_sosl" target="_blank">Salesforce SOQL documentation</a> for more information.</p>
 </script>
 

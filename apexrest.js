@@ -11,10 +11,6 @@ const handleInput = (node, msg) => {
 
   const realAction = (org, payload) => {
     return new Promise((resolve, reject) => {
-      // console.log("MSG:");
-      // console.log(msg);
-      // console.log("CONFIG:");
-      // console.log(config);
 
       Object.assign(payload, {
         method: msg.method || config.method,
