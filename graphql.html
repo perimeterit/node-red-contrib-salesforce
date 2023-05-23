@@ -44,4 +44,6 @@
 
 <script type="text/x-red" data-help-name="GraphQL">
     <p>Executes a GraphQL query.</p>
+    <pre>query accounts { uiapi { query { Account { edges { node { Name { value } } } } } } }</pre>
+    <p>The GraphQL query can be specified in the node, however if left blank, the GraphQL query should be set in an incoming message on <code>msg.query</code>.</p>
 </script>
