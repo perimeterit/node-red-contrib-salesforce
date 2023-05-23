@@ -25,11 +25,7 @@ const handleInput = (node, msg) => {
         .postUrl(payload)
         .then((results) => {
           const finalResults = JSON.parse(results);
-          if (finalResults.errors && finalResults.errors.length == 0) {
-            resolve(finalResults.data);
-          } else {
-            resolve(finalResults.errors);
-          }
+          resolve(finalResults);
         })
         .catch((err) => reject(err));
     });
@@ -57,5 +53,5 @@ module.exports = function(RED) {
 
     node.on('input', (msg) => handleInput(node, msg));
   }
-  RED.nodes.registerType('GraphQL', GraphQLQuery);
+  RED.nodes.registerType('graphql', GraphQLQuery);
 };

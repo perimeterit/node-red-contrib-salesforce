@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('GraphQL', {
+    RED.nodes.registerType('graphql', {
         category: 'Salesforce',
         color: '#C0DEED',
         defaults: {
@@ -27,7 +27,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="GraphQL">
+<script type="text/x-red" data-template-name="graphql">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -42,7 +42,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="GraphQL">
+<script type="text/x-red" data-help-name="graphql">
     <p>Executes a GraphQL query.</p>
     <pre>query accounts { uiapi { query { Account { edges { node { Name { value } } } } } } }</pre>
     <p>The GraphQL query can be specified in the node, however if left blank, the GraphQL query should be set in an incoming message on <code>msg.query</code>.</p>
