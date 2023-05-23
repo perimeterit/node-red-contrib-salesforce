@@ -25,7 +25,11 @@ const handleInput = (node, msg) => {
         .postUrl(payload)
         .then((results) => {
           const finalResults = JSON.parse(results);
-          resolve(finalResults);
+          if (finalResults.errors && finalResults.errors.length == 0) {
+            resolve(finalResults.data);
+          } else {
+            resolve(finalResults.errors);
+          }
         })
         .catch((err) => reject(err));
     });
