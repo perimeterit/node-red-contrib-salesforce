@@ -228,3 +228,18 @@ Posting chatter messages to users or objects. The msg payload turns into the bod
 When `ParentId` is not supplied, the user specified in the configuration is used. `RelatedRecordId` is optional.
 
 Return value is similar (for now) to object insert
+
+### GraphQL
+
+Executes a GraphQL query
+
+```
+query accounts { uiapi { query { Account { edges { node { Name { value } } } } } } }
+```
+
+The resulting message has the following properties:
+
+- msg.payload.data - the records returned from the query
+- msg.payload.errors - an array of error objects containing information regarding any errors encountered while executing the query
+
+The query can be configured in the node, however if left blank, the query should be set in an incoming message on `msg.query`. See the [Salesforce GraphQL documentation](https://developer.salesforce.com/docs/platform/graphql/overview) for more information.
