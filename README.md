@@ -228,3 +228,15 @@ Posting chatter messages to users or objects. The msg payload turns into the bod
 When `ParentId` is not supplied, the user specified in the configuration is used. `RelatedRecordId` is optional.
 
 Return value is similar (for now) to object insert
+
+### Apex REST
+
+Executes a Apex REST uri
+
+An HTTP method and uri should be provided in the Apex REST node. Example uri:
+
+```
+/HelloWorldTest
+```
+
+The resulting message will depend on the HTTP method and uri. Test the example uri given above using the Apex file (HelloWorldTest.apxc) provided in the 'examples' folder.
