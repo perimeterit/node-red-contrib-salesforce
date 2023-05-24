@@ -239,4 +239,4 @@ An HTTP method and uri should be provided in the Apex REST node. Example uri:
 /HelloWorldTest
 ```
 
-The resulting message will depend on the HTTP method and uri. Test the example uri given above using the Apex file (HelloWorldTest.apxc) provided in the 'examples' folder.
+The resulting message will depend on the HTTP method and uri. Test the example uri given above using the Apex REST example flow file (apexrest.json) and associated Apex file (HelloWorldTest.apxc) provided in the 'examples' folder.
