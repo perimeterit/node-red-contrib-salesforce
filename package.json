@@ -42,6 +42,7 @@
       "streaming": "streaming.js",
       "obm": "obm.js",
       "apexrest": "apexrest.js",
+      "GraphQL": "graphql.js",
       "connection-config": "connection-config.js"
     }
   },
@@ -51,6 +52,7 @@
   "license": "MIT",
   "dependencies": {
     "faye": "^1.4.0",
+    "graphql": "^16.6.0",
     "nforce8": "2.1.1",
     "xml2js": "^0.4.23"
   },

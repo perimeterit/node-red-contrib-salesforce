@@ -240,3 +240,18 @@ An HTTP method and uri should be provided in the Apex REST node. Example uri:
 ```
 
 The resulting message will depend on the HTTP method and uri. Test the example uri given above using the Apex REST example flow file (apexrest.json) and associated Apex file (HelloWorldTest.apxc) provided in the 'examples' folder.
+
+### GraphQL
+
+Executes a GraphQL query
+
+```
+query accounts { uiapi { query { Account { edges { node { Name { value } } } } } } }
+```
+
+The resulting message has the following properties:
+
+- msg.payload.data - the records returned from the query
+- msg.payload.errors - an array of error objects containing information regarding any errors encountered while executing the query
+
+The query can be configured in the node, however if left blank, the query should be set in an incoming message on `msg.query`. See the [Salesforce GraphQL documentation](https://developer.salesforce.com/docs/platform/graphql/overview) for more information.
