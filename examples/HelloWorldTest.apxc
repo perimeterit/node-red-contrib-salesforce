@@ -1,0 +1,23 @@
+@RestResource(urlMapping='/HelloWorldTest/*')
+global with sharing class HelloWorldTest {
+    @HttpGet
+    global static String getRecord() {
+        return('Hello world (GET)');
+    }
+    @HttpPost
+    global static String postRecord() {
+        return('Hello world (POST)');
+    }
+    @HttpPut
+    global static String putRecord() {
+        return('Hello world (PUT)');
+    }
+    @HttpPatch
+    global static String patchRecord() {
+        return('Hello world (PATCH)');
+    }
+    @HttpDelete
+    global static String deleteRecord() {
+        return('Hello world (DELETE)');
+    }
+}

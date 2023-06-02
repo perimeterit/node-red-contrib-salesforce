@@ -1,0 +1,72 @@
+[
+    {
+        "id": "c92ed18a30b067b9",
+        "type": "tab",
+        "label": "Apex REST Example Flow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "65afaf6f2bbe0120",
+        "type": "debug",
+        "z": "c92ed18a30b067b9",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "a4a3c5d73531c17c",
+        "type": "inject",
+        "z": "c92ed18a30b067b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "92ed5952085a8999"
+            ]
+        ]
+    },
+    {
+        "id": "92ed5952085a8999",
+        "type": "apexrest",
+        "z": "c92ed18a30b067b9",
+        "name": "",
+        "method": "GET",
+        "uri": "/HelloWorldTest",
+        "connection": "b20e4c00.2e8ab",
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "65afaf6f2bbe0120"
+            ]
+        ]
+    }
+]
