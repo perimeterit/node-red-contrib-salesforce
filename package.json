@@ -53,6 +53,7 @@
   "dependencies": {
     "faye": "^1.4.0",
     "graphql": "^16.6.0",
+    "jsforce": "^3.8.2",
     "nforce8": "2.1.1",
     "xml2js": "^0.4.23"
   },
