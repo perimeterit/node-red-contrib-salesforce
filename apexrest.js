@@ -20,6 +20,9 @@ const handleInput = (node, msg) => {
       org
         .apexRest(payload)
  	      .then((results) => {
+          if(config.response === "json"){
+            results = JSON.parse(results);
+          }
           resolve(results);
         })
         .catch((err) => reject(err));

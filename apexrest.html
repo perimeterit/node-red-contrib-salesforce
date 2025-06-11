@@ -16,6 +16,9 @@
                 value: "",
                 type: "connection-config",
                 required: true
+            },
+            response: {
+                value: "utf8 string"
             }
         },
         inputs: 1,
@@ -49,6 +52,13 @@
     <div class="form-row">
         <label for="node-input-uri"><i class="fa fa-database"></i> uri</label>
         <textarea id="node-input-uri" style="width:300px"></textarea>
+    </div>
+        <div class="form-row">
+        <label for="node-input-response"><i class="icon-tag"></i> Response Type</label>
+        <select id="node-input-response">
+          <option value="utf8 string">UTF8 String</option>
+          <option value="json">JSON</option>
+        </select>
     </div>
 </script>
 
