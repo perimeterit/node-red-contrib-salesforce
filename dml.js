@@ -1,72 +1,66 @@
 const actionHelper = require('./lib/action_helper');
 
 /**
- * Executes a DML operation on a single object
+ * Executes a DML operation using jsforce
  *
  * @param {node-red-node} node the current node
  * @param {msg} msg the incoming message
  */
 const handleInput = (node, msg) => {
   const config = node.config;
-  const realAction = (org, payload, nforce) => {
-    return new Promise((resolve, reject) => {
-      // check for overriding message properties
-      // action and object overwrite the configured ones
-      const theAction = msg.action ? msg.action : config.action;
-      const theObject = msg.object ? msg.object : config.object;
-      const sobj = nforce.force.createSObject(theObject, msg.payload);
-      Object.assign(payload, {
-        sobject: sobj
-      });
-      // Headers determine some of the behavior - we pass them on
-      nforce.extractHeaders(payload, msg);
+
+  const realAction = async (conn, payload) => {
+    try {
+      const theAction = msg.action || config.action;
+      const theObject = msg.object || config.object;
+      const data = msg.payload || {};
 
       let dmlResult;
       switch (theAction) {
         case 'insert':
-          dmlResult = org.insert(payload);
+          dmlResult = await conn.sobject(theObject).create(data);
           break;
+
         case 'update':
-          dmlResult = org.update(payload);
+          dmlResult = await conn.sobject(theObject).update(data);
           break;
+
         case 'upsert':
-          if (msg.hasOwnProperty('externalId')) {
-            sobj.setExternalId(msg.externalId.field, msg.externalId.value);
+          if (!msg.externalId || !msg.externalId.field || !msg.externalId.value) {
+            throw new Error('Missing externalId info for upsert');
           }
-          dmlResult = org.upsert(payload);
+          dmlResult = await conn
+            .sobject(theObject)
+            .upsert(data, msg.externalId.field);
           break;
+
         case 'delete':
-          dmlResult = org.delete(payload);
+          dmlResult = await conn.sobject(theObject).destroy(data.id);
           break;
+
         default:
-          // eslint-disable-next-line no-case-declarations
-          const err = new Error('Unknown method:' + theAction);
-          reject(err);
+          throw new Error('Unknown DML action: ' + theAction);
       }
 
-      dmlResult
-        .then((sfdcResult) => {
-          // Find the best id
-          let id = msg.payload.id;
-          if (sfdcResult.id) {
-            id = sfdcResult.id;
-          } else if (msg.externalId) {
-            id = msg.externalId;
-          }
+      // Build response
+      const id =
+        dmlResult.id || data.id || (msg.externalId && msg.externalId.value);
 
-          let result = {
-            success: true,
-            object: theObject.toLowerCase(),
-            action: theAction,
-            id: id
-          };
-          resolve(result);
-        })
-        .catch((err) => reject(err));
-    });
+      return {
+        success: true,
+        object: theObject.toLowerCase(),
+        action: theAction,
+        id: id
+      };
+
+    } catch (err) {
+      throw err;
+    }
   };
+
   actionHelper.inputToSFAction(node, msg, realAction);
 };
+
 
 module.exports = function (RED) {
   function Dml(config) {

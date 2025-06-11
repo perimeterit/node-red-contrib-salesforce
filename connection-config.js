@@ -3,7 +3,7 @@
  * Salesforce related settings including
  * the ability to read data from the environment
  */
-const API_VERSION = require('./lib/nforce_wrapper').API_VERSION;
+const API_VERSION = require('./lib/jsforce_wrapper').API_VERSION;
 
 /**
  * Returns a configured value based on a key and
