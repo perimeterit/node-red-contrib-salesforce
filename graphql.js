@@ -9,23 +9,16 @@ const actionHelper = require('./lib/action_helper');
 const handleInput = (node, msg) => {
   const config = node.config;
 
-  const realAction = (org, payload) => {
+  const realAction = (conn, payload) => {
     return new Promise((resolve, reject) => {
 
-      var gqlUrl = "/services/data/"+payload.apiVersion+"/graphql"
+      var gqlUrl = "/services/data/v55.0/graphql"
 
-      Object.assign(payload, {
-        url: gqlUrl,
-        body: {
-                "query": msg.query || config.query
-              }
-      });
-
-      org
-        .postUrl(payload)
+      conn
+        .requestPost(gqlUrl, {"query": config.query})
         .then((results) => {
-          const finalResults = JSON.parse(results);
-          resolve(finalResults);
+          console.log(results)
+          resolve(results);
         })
         .catch((err) => reject(err));
     });
