@@ -8,19 +8,26 @@ const actionHelper = require('./lib/action_helper');
  */
 const handleInput = (node, msg) => {
   const config = node.config;
-  const realAction = (org, payload) => {
+   const realAction = (conn, payload) => {
     return new Promise((resolve, reject) => {
-      Object.assign(payload, {
-        fetchAll: config.fetchAll,
-        search: msg.query || config.query
-      });
-      org
-        .query(payload)
+      const queryString = config.query;
+
+      const options = {};
+      if (config.fetchAll) {
+        // Use autoFetch in jsforce to fetch all records across pages
+        options.autoFetch = true;
+        options.maxFetch = 10000; // or some safe upper limit
+      }
+
+      conn.search(queryString, options)
         .then((results) => {
-          const finalResults = results.records.map((r) => r.toJSON());
-          resolve(finalResults);
+          console.log(results);
+          resolve(results.searchRecords); // already plain JS objects
         })
-        .catch((err) => reject(err));
+        .catch((err) => {
+          console.log(err);
+          reject(err);}
+        );
     });
   };
 
