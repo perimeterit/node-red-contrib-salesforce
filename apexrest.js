@@ -9,33 +9,36 @@ const actionHelper = require('./lib/action_helper');
 const handleInput = (node, msg) => {
   const config = node.config;
 
-  const realAction = async (conn, payload) => {
-    try {
-      const method = (msg.method || config.method || 'GET').toUpperCase();
-      const uri = msg.uri || config.uri;
+  const realAction = (conn, payload) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const method = (msg.method || config.method || 'GET').toUpperCase();
+        const uri = msg.uri || config.uri;
 
-      if (!uri) {
-        throw new Error('Missing URI for Apex REST call');
+        if (!uri) {
+          return reject(new Error('Missing URI for Apex REST call'));
+        }
+
+        const body = msg.body || {};
+        const headers = msg.headers || {};
+
+        const fullUrl = `/services/apexrest${uri.startsWith('/') ? uri : '/' + uri}`;
+
+        conn.request({
+          method,
+          url: fullUrl,
+          headers,
+          body: ['POST', 'PATCH', 'PUT'].includes(method) ? body : undefined
+        }).then((response) => {
+          resolve(JSON.parse(response));
+        }).catch((err) => {
+          reject(err);
+        });
+
+      } catch (err) {
+        reject(err);
       }
-
-      const body = msg.body || {};
-      const headers = msg.headers || {};
-
-      // Salesforce expects relative paths for Apex calls (starting after /services/apexrest)
-      const fullUrl = `/services/apexrest${uri.startsWith('/') ? uri : '/' + uri}`;
-
-      const response = await conn.request({
-        method,
-        url: fullUrl,
-        headers,
-        body: ['POST', 'PATCH', 'PUT'].includes(method) ? body : undefined
-      });
-
-      return response;
-
-    } catch (err) {
-      throw err;
-    }
+    });
   };
 
   actionHelper.inputToSFAction(node, msg, realAction);
