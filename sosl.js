@@ -15,10 +15,10 @@ const handleInput = (node, msg) => {
         search: msg.query || config.query
       });
       org
-        .query(payload)
+        .search(payload)
         .then((results) => {
-          const finalResults = results.records.map((r) => r.toJSON());
-          resolve(finalResults);
+          //const finalResults = results.searchRecords.map((r) => r.toJSON());
+          resolve(results.searchRecords);
         })
         .catch((err) => reject(err));
     });
