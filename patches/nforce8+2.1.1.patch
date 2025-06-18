@@ -1,0 +1,28 @@
+diff --git a/node_modules/nforce8/index.js b/node_modules/nforce8/index.js
+index 934fc8c..dd28456 100644
+--- a/node_modules/nforce8/index.js
++++ b/node_modules/nforce8/index.js
+@@ -973,7 +973,7 @@ function unsucessfullResponseCheck(res, self, opts) {
+ 
+   const e = new Error();
+   e.statusCode = res.status;
+-  const body = util.isJsonResponse(res) ? res.json() : res.txt();
++  const body = util.isJsonResponse(res) ? res.json() : res.text();
+ 
+   // Salesforce sends internal errors as Array
+   if (_.isArray(body) && body.length > 0) {
+diff --git a/node_modules/nforce8/lib/util.js b/node_modules/nforce8/lib/util.js
+index 3b553d5..acc221c 100644
+--- a/node_modules/nforce8/lib/util.js
++++ b/node_modules/nforce8/lib/util.js
+@@ -1,8 +1,7 @@
+ /* Checks if a header exists (case insensitive) and contains a value */
+ const checkHeaderCaseInsensitive = (headers, key, searchfor) => {
+-  const lower = key.toLowerCase;
+-  const headerContent =
+-    headers[Object.keys(headers).find((k) => k.toLowerCase() === lower)];
++  const lower = key.toLowerCase();
++  const headerContent = headers.get(lower);
+   return headerContent ? headerContent.includes(searchfor) : false;
+ };
+ 
