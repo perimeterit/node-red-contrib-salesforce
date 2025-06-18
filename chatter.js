@@ -12,39 +12,48 @@ const extractUserid = (payload) => {
 };
 
 const handleInput = (node, msg) => {
-  const realAction = (org, payload, nforce) => {
-    return new Promise((resolve, reject) => {
-      const sobj = nforce.force.createSObject('FeedItem');
-      sobj.set('Body', msg.payload);
-      // Additional fields for addressing the chatter post properly
-      if (msg.ParentId) {
-        sobj.set('ParentId', msg.ParentId);
-      } else {
-        // Attach to current user
-        sobj.set('ParentId', extractUserid(payload));
-      }
+  const realAction = (conn, payload) => {
+    return new Promise(async (resolve, reject) => {
+      // Build the FeedItem record
+      const feedItem = {
+        Body: msg.payload,
+        ParentId: msg.ParentId || extractUserid(payload)
+      };
 
       if (msg.RelatedRecordId) {
-        sobj.set('RelatedRecordId', msg.RelatedRecordId);
+        feedItem.RelatedRecordId = msg.RelatedRecordId;
       }
 
       if (msg.title) {
-        sobj.set('title', msg.title);
+        feedItem.Title = msg.title;
       }
-      payload.sobject = sobj;
 
-      org
-        .insert(payload)
-        .then((sfdcResult) => {
-          let result = {
-            success: true,
-            object: 'feeditem',
-            action: 'insert',
-            id: sfdcResult.id ? sfdcResult.id : msg.externalId ? msg.externalId : msg.payload.id
-          };
-          resolve(result);
-        })
-        .catch((err) => reject(err));
+      
+      conn.sobject('FeedItem').create(feedItem)
+      .then((result) => {
+        const response = {
+          success: result.success,
+          object: 'feeditem',
+          action: 'insert',
+          id: result.id || msg.externalId || msg.payload.id
+        };
+
+        resolve(response);
+      })
+      .catch((e) => reject(e));
+
+      // (err, result) => {
+      //   if (err) return reject(err);
+
+      //   const response = {
+      //     success: result.success,
+      //     object: 'feeditem',
+      //     action: 'insert',
+      //     id: result.id || msg.externalId || msg.payload.id
+      //   };
+
+      //   resolve(response);
+      // })
     });
   };
 
