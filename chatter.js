@@ -14,7 +14,6 @@ const extractUserid = (payload) => {
 const handleInput = (node, msg) => {
   const realAction = (conn, payload) => {
     return new Promise(async (resolve, reject) => {
-      // Build the FeedItem record
       const feedItem = {
         Body: msg.payload,
         ParentId: msg.ParentId || extractUserid(payload)
@@ -41,19 +40,6 @@ const handleInput = (node, msg) => {
         resolve(response);
       })
       .catch((e) => reject(e));
-
-      // (err, result) => {
-      //   if (err) return reject(err);
-
-      //   const response = {
-      //     success: result.success,
-      //     object: 'feeditem',
-      //     action: 'insert',
-      //     id: result.id || msg.externalId || msg.payload.id
-      //   };
-
-      //   resolve(response);
-      // })
     });
   };
 

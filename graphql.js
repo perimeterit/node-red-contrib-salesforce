@@ -17,7 +17,6 @@ const handleInput = (node, msg) => {
       conn
         .requestPost(gqlUrl, {"query": config.query})
         .then((results) => {
-          console.log(results)
           resolve(results);
         })
         .catch((err) => reject(err));
