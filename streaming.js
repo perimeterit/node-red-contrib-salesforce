@@ -73,23 +73,24 @@ const createSubscription = (subscribeOptions) => {
   };
 
   try {
-    const org = subscribeOptions.org;
-    node.subscriptionMessage = 'Subscribed to:' + streamOpts.topic;
-    const fayeOptions = {
-      oauth: subscribeOptions.oauth
-      //timeout: 90,
-      //retry: 60
-    };
-    node.client = org.createStreamClient(fayeOptions);
-    const stream = node.client.subscribe(streamOpts);
+    const conn = subscribeOptions.conn;
+    node.subscriptionMessage = 'Subscribed to: ' + streamOpts.topic;
+
+    const topic = conn.streaming.topic(streamOpts.topic);
+    node.client = topic;
+
+    topic.subscribe(
+      (message) => handleStreamData(node, message),
+      (error) => handleStreamError(node, error)
+    );
+
     node.log(node.subscriptionMessage);
     node.subscriptionActive = true;
-    stream.on('error', (err) => handleStreamError(node, err));
-    stream.on('data', (data) => handleStreamData(node, data));
+
+    subscribeOptions.resolve();
   } catch (ex) {
     subscribeOptions.reject(ex);
   }
-
   actionHelper.subscribed(node, node.subscriptionMessage);
   subscribeOptions.resolve();
 };
@@ -98,8 +99,8 @@ const terminateSubscription = (subscribeOptions) => {
   const node = subscribeOptions.node;
   if (node.subscriptionActive) {
     try {
-      if (node.client.disconnect) {
-        node.client.disconnect();
+      if (node.client && node.client.cancel) {
+        node.client.cancel();
       }
     } catch (err) {
       subscribeOptions.reject(err);
@@ -113,14 +114,14 @@ const terminateSubscription = (subscribeOptions) => {
 
 const handleInput = (node, msg) => {
   const action = msg.action || (node.subscriptionActive ? 'unsubscribe' : 'subscribe');
-  const realAction = (org, payload, nforce) => {
+  const realAction = (conn, payload, jsforce) => {
     return new Promise((resolve, reject) => {
       const subscribeOptions = {
         node,
-        org,
+        conn,
         msg,
         oauth: payload.oauth,
-        nforce,
+        jsforce,
         resolve,
         reject
       };
