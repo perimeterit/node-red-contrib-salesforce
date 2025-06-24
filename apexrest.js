@@ -24,7 +24,7 @@ const handleInput = (node, msg) => {
         const headers = msg.headers || {};
 
         if (!/^(GET|DELETE)$/i.test(method)) {
-          headers['content-type'] = 'application/json';
+          headers['content-type'] = !config.csv ? 'application/json' : 'text/csv';
         }
 
 
@@ -34,8 +34,8 @@ const handleInput = (node, msg) => {
             method,
             url: fullUrl,
             headers,
-            body: ['POST', 'PATCH', 'PUT'].includes(method) ? JSON.stringify(body) : undefined
-        }).then((response) => {
+            body: ['POST', 'PATCH', 'PUT'].includes(method) ? config.csv ? msg.payload : JSON.stringify(body) : undefined
+        }, {noContentResponse: "success"}).then((response) => {
           if(config.response === "json"){
             resolve(JSON.parse(response));
           }
