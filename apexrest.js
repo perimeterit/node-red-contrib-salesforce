@@ -1,4 +1,3 @@
-const { JsonpTransport } = require('jsforce/lib/transport');
 const actionHelper = require('./lib/action_helper');
 
 /**
