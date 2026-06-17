@@ -1,0 +1,13 @@
+diff --git a/node_modules/nforce8/lib/auth.js b/node_modules/nforce8/lib/auth.js
+index 40f6cdd..a605e01 100644
+--- a/node_modules/nforce8/lib/auth.js
++++ b/node_modules/nforce8/lib/auth.js
+@@ -177,6 +177,8 @@ const authenticate = function (data) {
+         this.securityToken = opts.securityToken;
+       }
+     }
++  } else if (opts.grantType) {
++    bopts.grant_type = opts.grantType;
+   }
+ 
+   opts.body = new URLSearchParams(bopts).toString();
